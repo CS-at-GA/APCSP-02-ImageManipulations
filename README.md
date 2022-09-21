@@ -3,7 +3,7 @@
 ## Pre-reads
 * The P5 documentation for [p5.Image](https://p5js.org/reference/#/p5.Image). We will be editing a lot of pixels during this project, and understanding how to do that efficiently is going to be crucial. 
 * [Seven greyscale conversion algorithms](https://tannerhelland.com/2011/10/01/grayscale-image-algorithm-vb6.html), which walks through the pseudocode involved in various different techniques. 
-* Wildman Shiffman, conductor of [The Coding Train](https://thecodingtrain.com/) talks about [dithering](https://www.youtube.com/watch?v=0L2n8Tg2FwI). It should be noted that this is written in Processing, rather than p5 (Java, vs. JavaScript), so some adapting may be necessary. Here is the Wikipedia article on [Floyd-Steinberg Dithering](https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering).
+* Wildman Shiffman, conductor of [The Coding Train](https://thecodingtrain.com/) talks about [dithering](https://www.youtube.com/watch?v=0L2n8Tg2FwI). It should be noted that this is written in Processing, rather than p5 (Java, vs. JavaScript), so some adapting may be necessary. Here is the Wikipedia article on [Floyd-Steinberg Dithering](https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering).[^1]
 * Blur
 
 ## Starter Code Overview
@@ -31,5 +31,9 @@ The starter code includes a few baseline algorithms, as well as a nifty key bind
 * For each of the above filters, your algorithm must be implemented by *you* adjusting data on a pixel-by-pixel basis. You can not use any built in functionality. 
 
 ### _Some_ Ideas for Ways to Expand on This Project. 
-* 
+* Saturate/desaturate
+* masking
+* Gaussian Blur
+
+[^1]: [Color Quantization](https://en.wikipedia.org/wiki/Color_quantization) is an interesting topic unto itself. This is also what the Back to School Night demo was all about. The method there was called [k-means](https://www.nvidia.com/en-us/glossary/data-science/k-means/). 
 
