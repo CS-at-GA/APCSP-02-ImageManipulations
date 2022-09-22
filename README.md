@@ -4,7 +4,7 @@
 * The P5 documentation for [p5.Image](https://p5js.org/reference/#/p5.Image). We will be editing a lot of pixels during this project, and understanding how to do that efficiently is going to be crucial. 
 * [Seven greyscale conversion algorithms](https://tannerhelland.com/2011/10/01/grayscale-image-algorithm-vb6.html), which walks through the pseudocode involved in various different techniques. 
 * Wildman Shiffman, conductor of [The Coding Train](https://thecodingtrain.com/) talks about [dithering](https://www.youtube.com/watch?v=0L2n8Tg2FwI). It should be noted that this is written in Processing, rather than p5 (Java, vs. JavaScript), so some adapting may be necessary. Here is the Wikipedia article on [Floyd-Steinberg Dithering](https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering).[^1]
-* Blur
+* [Box Blur](https://en.wikipedia.org/wiki/Box_blur)
 
 ## Starter Code Overview
 
