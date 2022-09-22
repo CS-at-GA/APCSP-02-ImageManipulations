@@ -8,32 +8,116 @@
 
 ## Starter Code Overview
 
-The starter code includes a few baseline algorithms, as well as a nifty key binding pattern.
+The starter code includes some pixel editing utility functions, a few baseline algorithms, and a nifty key binding pattern. It is also broken up into multiple files for simplicity. You should be doing most of your work in `filters.js`. 
 
 ### `script.js`
 
-#### `preload`
+Because of the way the code is broken up, this file is pretty spartan, containing loading code and code to draw the current version of the image, as well as the dragging rectangle. Perhaps the only noteworthy sections of this code are this `if` statement: 
+```javascript
+if( dragInfo.startX && dragInfo.endX ) 
+```
+which guards the drawing of the dragging rectangle. And the use of [`rectMode`](https://p5js.org/reference/#/p5/rectMode) which changes how the parameters of `rect` are interpreted. 
 
-#### `setup`
+### `ui.js`
 
-#### `draw`
+Here is all the code that deails with button presses and mouse things. 
 
-#### `keyPressed`
+#### Keybinding code
+
+The traditional way to manage key presses is by using an `if` statement to discover what key has been pressed and then to act accordingly. It is a bit cleaner to leverage JavaScript's objects. Take, for instance, this code:
+
+```javascript
+const editBindings = {
+  "b":simpleBlackAndWhite,
+  "l":simpleBlur,
+}
+```
+
+This creates an object (a structure that contains key/value pairs). The keys in this case are the letters we want our program to respond to and the values are the functions that corrospond to those keys. In this case, it is just the name of the functions, but we could also create anonymous functions. 
+
+```javascript
+const editBindings = {
+  "b":simpleBlackAndWhite,
+  "l":simpleBlur,
+  "a":() => console.log("doing something awesome")
+}
+```
+
+This structure tidies up `keyPressed` by using the `in` keyword to see if we should respond to a particular key (stored in the p5 variable `key` and then use `key` as the key into the object to get the correct function. Throw some parentheses on there (because it is a function call), capture the output and we're done.  
+
+```javascript
+if( key in editBindings ) {
+  //...
+  img = editBindings[key]();   
+  //...
+}
+```
+
+The actual code there is a bit more complex because of the selective editing that is built in and the fact that I wanted two separate binding lists.[^2]
+
+The rest of the code deals with handling the creation of a selection box. We update object variables (using the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)) to identify the start and end of a drag, as well as being able to reset via double click. It should be noted that this will only work for boxes created by dragging from the top left to the bottom right. A bug, to be sure. 
+
+### `image.js`
+
+This file contains several utility functions for working with `p5.Image` objects. As you've read, it is way faster to work with the `pixels` array of a `p5.Image` than to use the `get` and `set` methods, so much of the code here deals with managing that complexity. 
+
+#### `fitToCanvas`, `duplicate`, `copyOfOriginal`
+
+These are all fairly straightforward and do not deal with the pixels array. `copyOfOriginal` is really just a wrapper method for `duplicate`. 
+
+#### `editOnSubsection`, and `createImageFrom` 
+
+These functions also do not deal with the pixels array, but rather handle the editing of a subsection of the image (defined by the dragging of the mouse). Essentially, a new image is created from the selection, the edit is applied to that image, and then the pixels are copied via the [`copy`](https://p5js.org/reference/#/p5.Image/copy) function to `img`
+
+
+#### `getSurroundingPixels`
+
+This is probably the most important function to creating advanced filters. The idea is that it returns all of the surrounding pixel information relative to a given pixel, (`x`,`y`), and at a given `depth`. It _does not_ keep the structure of the pixels (that is, it is a 1D array, instead of a 2D array) and it lops off any pixels that would overrun the edge of the image.[^3] This should be sufficient for many algorithms that are, for instance, averaging the values of the surrounding pixels. Further, it should be noted that while it says "pixels" it is actually returning the four channels that make up a pixel. 
+
+#### `getChannelsAt` and `writeColor`
+
+These are the channel equivalent of `get` and `set`. 
+
+#### `indexOf`
+
+A helper function to convert an x,y coordinate in an image to the appropriate index into the `pixels` array. 
+
+### `filters.js`
+
+This is where you should be doing the bulk of your work. It contains two simple filters as examples. It should be noted that as you develop your own filters, you should have them work on a source image, as in the example, so that they will automatically work with the selection. Also note the calls to `loadPixels` and `updatePixels` on the editing image that surround the changes. 
+
+#### `simpleBlackAndWhite`
+
+This goes through the image, pixel-by-pixel, averages the color channel values, then sets each channel to that average. 
+
+#### `simpleBlur`
+
+This goes through the image, pixel-by-pixel, gets the average color values for all the surrounding pixels, then applies it to that pixel.
+
+### `index.html`
+
+You'll notice that more `<script>` tags have been added here to load the individual files. The order here matters, oddly. 
 
 ## Assignment
+
+You will create three novel image filters. 
 
 ### Requirements
 * Your project must respond to user input.
 * Your project must have a way to revert to the original image. 
 * Your project must include an algorithm that that changes all pixels _or_ all pixels in a user-definable area, in a color-based way. For instance, you could press 'b' and all the pixels would convert to a black and white image, or you could click and drag your mouse over an area, press 'b' and all the pixels in that area would convert to black and white. 
-* Your project must include an algorithm that uses surrounding pixels to generate a new pixel. Blurring or scaling would be examples of this. 
-* Your project must include an algorithm that reduces the color palatte of an image. Posterization and dithering would be examples of this. 
+* Your project must include an algorithm that uses surrounding pixels to update a pixel's values. Blurring or scaling would be examples of this. 
 * For each of the above filters, your algorithm must be implemented by *you* adjusting data on a pixel-by-pixel basis. You can not use any built in functionality. 
 
 ### _Some_ Ideas for Ways to Expand on This Project. 
 * Saturate/desaturate
-* masking
-* Gaussian Blur
+* Warping
+* Pixelating 
+* Advanced Blurring techniques
+* Scaled effects
+* Advanced masking
 
-[^1]: [Color Quantization](https://en.wikipedia.org/wiki/Color_quantization) is an interesting topic unto itself. This is also what the Back to School Night demo was all about. The method there was called [k-means](https://www.nvidia.com/en-us/glossary/data-science/k-means/). 
+[^1]: [Color Quantization](https://en.wikipedia.org/wiki/Color_quantization) is an interesting topic unto itself. This is also what the Back to School Night demo was all about. The method there was called [k-means](https://www.nvidia.com/en-us/glossary/data-science/k-means/).
+[^2]: I suppose, though, they don't strictly need to be separated, but I do find this approach a bit cleaner. 
+[^3]: The net effect of all of this is that if you need the structure of the extra pixels, you'll have to do that as part of whatever functionality you're developing. 
 
