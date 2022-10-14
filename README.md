@@ -1,5 +1,7 @@
 # Image Manipulations
 
+Don't forget to submit [help requests](https://github.com/CS-at-GA/APCSP-02-ImageManipulations/issues/new?assignees=gajoswald&labels=help+wanted&template=help-request.md&title=Help+Request), [requests for clarity](https://github.com/CS-at-GA/APCSP-02-ImageManipulations/issues/new?assignees=gajoswald&labels=documentation&template=request-for-clarity.md&title=Request+for+Clarity), or [bug reports](https://github.com/CS-at-GA/APCSP-02-ImageManipulations/issues/new?assignees=gajoswald&labels=bug&template=bug_report.md&title=) on github as well.
+
 ## Pre-reads
 * The P5 documentation for [p5.Image](https://p5js.org/reference/#/p5.Image). We will be editing a lot of pixels during this project, and understanding how to do that efficiently is going to be crucial. 
 * [Seven greyscale conversion algorithms](https://tannerhelland.com/2011/10/01/grayscale-image-algorithm-vb6.html), which walks through the pseudocode involved in various different techniques. 
