@@ -25,5 +25,3 @@ function draw() {
     rectMode(CORNER)
   }
 }
-
-
