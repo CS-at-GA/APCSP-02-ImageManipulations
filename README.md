@@ -112,7 +112,8 @@ You will create two _novel_ image filters.
 * Your project must include an algorithm that that changes all pixels _or_ all pixels in a user-definable area, in a color-based way. For instance, you could press 'b' and all the pixels would convert to a black and white image, or you could click and drag your mouse over an area, press 'b' and all the pixels in that area would convert to black and white (**note:** the program _already_ does this, so you will need to do something else). 
 * Your project must include an algorithm that uses surrounding pixels to update a pixel's values. Blurring or scaling would be examples of this (**note:** the program _already_ has a simple blurring algorithm, so you will need to choose a different bluring algorithm, or choose something else). 
 * For both of the above filters, your algorithm must be implemented by *you* adjusting data on a pixel-by-pixel basis. You can not use any built in functionality to change how an image or a particlar pixel is rendered.
-* For both of the above filters, you must document how you developed your filter, including the research that you did about it. Trial and error won't cut it as the basis of your development. 
+* For both of the above filters, you must document how you developed your filter, including the research that you did about it. Trial and error won't cut it as the basis of your development.
+* You need to somehow display instructions for the user. 
 
 The project _already_ responds to user input and has a way to revert to the original image (pressing the 'o' key), so you don't need to do much more than make sure it works for the filters you create. 
 
