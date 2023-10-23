@@ -45,12 +45,14 @@ const editBindings = {
 }
 ```
 
+When you create a new filter, you will need to add a new binding to this object. The key will be a character and the value will be the name of the function. **Note:** if your filter ends up needing to take in parameters beyond `workingImage`, you'll need to create an anonymous function to handle that: `"x": () => myAwesomeFilter(workingImage, other, parameters),`
+
 This structure tidies up `keyPressed` by using the `in` keyword to see if we should respond to a particular key (stored in the p5 variable `key` and then use `key` as the key into the object to get the correct function. Throw some parentheses on there (because it is a function call), capture the output and we're done.  
 
 ```javascript
 if( key in editBindings ) {
   //...
-  img = editBindings[key]();   
+  workingImage = editBindings[key](workingImage)   
   //...
 }
 ```
@@ -63,18 +65,18 @@ The rest of the code deals with handling the creation of a selection box. We upd
 
 This file contains several utility functions for working with `p5.Image` objects. As you've read, it is way faster to work with the `pixels` array of a `p5.Image` than to use the `get` and `set` methods, so much of the code here deals with managing that complexity. 
 
-#### `fitToCanvas`, `duplicate`, `copyOfOriginal`
+#### `fitToCanvas`, `duplicate`
 
-These are all fairly straightforward and do not deal with the pixels array. `copyOfOriginal` is really just a wrapper method for `duplicate`. 
+These are fairly straightforward and do not deal with `pixels`. 
 
 #### `editOnSubsection`, and `createImageFrom` 
 
-These functions also do not deal with the pixels array, but rather handle the editing of a subsection of the image (defined by the dragging of the mouse). Essentially, a new image is created from the selection, the edit is applied to that image, and then the pixels are copied via the [`copy`](https://p5js.org/reference/#/p5.Image/copy) function to `img`
+These functions also do not deal with the `pixels`, but rather handle the editing of a subsection of the image (defined by the dragging of the mouse). Essentially, a new image is created from the selection, the edit is applied to that image, and then the pixels are copied via the [`copy`](https://p5js.org/reference/#/p5.Image/copy) function to `sourceImage`
 
 
 #### `getSurroundingPixels`
 
-This is probably the most important function to creating advanced filters. The idea is that it returns all of the surrounding pixel information relative to a given pixel, (`x`,`y`), and at a given `depth`. It _does not_ keep the structure of the pixels (that is, it is a 1D array, instead of a 2D array) and it lops off any pixels that would overrun the edge of the image.[^3] This should be sufficient for many algorithms that are, for instance, averaging the values of the surrounding pixels. Further, it should be noted that while it says "pixels" it is actually returning the four channels that make up a pixel. 
+**This is probably the most important function to creating advanced filters.** The idea is that it returns all of the surrounding pixel information relative to a given pixel, (`x`,`y`), and at a given `depth`. It _does not_ keep the structure of the pixels (that is, it is a 1D array, instead of a 2D array) and it lops off any pixels that would overrun the edge of the image.[^3] This should be sufficient for many algorithms that are, for instance, averaging the values of the surrounding pixels. Further, it should be noted that while it says "pixels" it is actually returning the four channels that make up a pixel. 
 
 #### `getChannelsAt` and `writeColor`
 
@@ -82,11 +84,11 @@ These are the channel equivalent of `get` and `set`.
 
 #### `indexOf`
 
-A helper function to convert an x,y coordinate in an image to the appropriate index into the `pixels` array. 
+A helper function to convert an x,y coordinate in an image to the appropriate index into `pixels`. 
 
 ### `filters.js`
 
-This is where you should be doing the bulk of your work. It contains two simple filters as examples. It should be noted that as you develop your own filters, you should have them work on a source image, as in the example, so that they will automatically work with the selection. Also note the calls to `loadPixels` and `updatePixels` on the editing image that surround the changes. 
+**This is where you should be doing the bulk of your work.** It contains two simple filters as examples. It should be noted that as you develop your own filters, you should have them work on a source image, as in the example, so that they will automatically work with the selection. Also note the calls to `loadPixels` and `updatePixels` on the editing image that surround the changes.
 
 #### `simpleBlackAndWhite`
 
@@ -102,14 +104,17 @@ You'll notice that more `<script>` tags have been added here to load the individ
 
 ## Assignment
 
-You will create three novel image filters. 
+You will create two _novel_ image filters. 
 
 ### Requirements
 * Your project must respond to user input.
 * Your project must have a way to revert to the original image. 
-* Your project must include an algorithm that that changes all pixels _or_ all pixels in a user-definable area, in a color-based way. For instance, you could press 'b' and all the pixels would convert to a black and white image, or you could click and drag your mouse over an area, press 'b' and all the pixels in that area would convert to black and white. 
-* Your project must include an algorithm that uses surrounding pixels to update a pixel's values. Blurring or scaling would be examples of this. 
-* For each of the above filters, your algorithm must be implemented by *you* adjusting data on a pixel-by-pixel basis. You can not use any built in functionality. 
+* Your project must include an algorithm that that changes all pixels _or_ all pixels in a user-definable area, in a color-based way. For instance, you could press 'b' and all the pixels would convert to a black and white image, or you could click and drag your mouse over an area, press 'b' and all the pixels in that area would convert to black and white (**note:** the program _already_ does this, so you will need to do something else). 
+* Your project must include an algorithm that uses surrounding pixels to update a pixel's values. Blurring or scaling would be examples of this (**note:** the program _already_ has a simple blurring algorithm, so you will need to choose a different bluring algorithm, or choose something else). 
+* For both of the above filters, your algorithm must be implemented by *you* adjusting data on a pixel-by-pixel basis. You can not use any built in functionality to change how an image or a particlar pixel is rendered.
+* For both of the above filters, you must document how you developed your filter, including the research that you did about it. Trial and error won't cut it as the basis of your development. 
+
+The project _already_ responds to user input and has a way to revert to the original image (pressing the 'o' key), so you don't need to do much more than make sure it works for the filters you create. 
 
 ### _Some_ Ideas for Ways to Expand on This Project. 
 * Saturate/desaturate
@@ -119,7 +124,6 @@ You will create three novel image filters.
 * Scaled effects
 * Advanced masking
 
-[^1]: [Color Quantization](https://en.wikipedia.org/wiki/Color_quantization) is an interesting topic unto itself. This is also what the Back to School Night demo was all about. The method there was called [k-means](https://www.nvidia.com/en-us/glossary/data-science/k-means/).
+[^1]: [Color Quantization](https://en.wikipedia.org/wiki/Color_quantization) is an interesting topic unto itself.  The method there was called [k-means](https://www.nvidia.com/en-us/glossary/data-science/k-means/) and is also a Machine Learning Algorithm. 
 [^2]: I suppose, though, they don't strictly need to be separated, but I do find this approach a bit cleaner. 
 [^3]: The net effect of all of this is that if you need the structure of the extra pixels, you'll have to do that as part of whatever functionality you're developing. 
-

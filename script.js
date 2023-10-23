@@ -1,5 +1,6 @@
 let original;
-let img;
+let workingImage;
+let initialClick = false
 let dragInfo = {}
 
 function preload() {
@@ -7,16 +8,16 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth-20, windowHeight-20);
   fitToCanvas(original);
-  img = copyOfOriginal();
+  workingImage = duplicate(original);
   background(255);
   noLoop();
 }
 
 function draw() {
   background('white')
-  image(img,0,0);
+  image(workingImage,0,0);
   if( dragInfo.startX && dragInfo.endX ) {
     noStroke();
     rectMode(CORNERS);

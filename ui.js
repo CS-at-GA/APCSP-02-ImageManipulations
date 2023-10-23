@@ -1,5 +1,5 @@
 const utilBindings = {
-  "o":copyOfOriginal
+  "o":() => duplicate(original)
 }
 
 // add new filters and key bindings here
@@ -11,22 +11,27 @@ const editBindings = {
 function keyPressed() {
   if( key in editBindings ) {
     if( dragInfo.startX && dragInfo.endX) {
-      editOnSubsection(dragInfo, editBindings[key])
+      editOnSubsection(dragInfo, editBindings[key], workingImage)
       dragInfo = {};  
     } else {
-      img = editBindings[key]();      
+      workingImage = editBindings[key](workingImage);      
     }
     redraw();
   }
   if( key in utilBindings ) {
-    img = utilBindings[key]();
+    workingImage = utilBindings[key]();
     redraw();    
   }
 }
 
 function mousePressed() {
-  loop();
-  dragInfo = {startX: mouseX, startY: mouseY }
+  if( !initialClick ) {
+    initialClick = true
+  } else {
+    loop();
+    dragInfo = {startX: mouseX, startY: mouseY }
+  }
+
 }
 
 function mouseDragged() {

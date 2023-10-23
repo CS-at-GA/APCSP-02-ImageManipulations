@@ -14,21 +14,17 @@ function duplicate(image) {
   return copy;
 }
 
-function copyOfOriginal() {
-  return duplicate(original);
+function editOnSubsection( rect, editFunction, sourceImage) {
+  let editImage = createImageFrom(rect,sourceImage);
+  editImage = editFunction(editImage);
+  sourceImage.copy(editImage, 0, 0, editImage.width, editImage.height, rect.startX, rect.startY, editImage.width, editImage.height );  
 }
 
-function editOnSubsection( rect, editFunction ) {
-  let editImg = createImageFrom(rect);
-  editImg = editFunction(editImg);
-  img.copy(editImg, 0, 0, editImg.width, editImg.height, rect.startX, rect.startY, editImg.width, editImg.height );  
-}
-
-function createImageFrom(rect, sourceImg=img) {
+function createImageFrom(rect, sourceImage) {
   const w = abs(rect.startX - rect.endX);
   const h = abs(rect.startY - rect.endY);
   const newImage = new p5.Image( w, h );
-  newImage.copy( sourceImg, rect.startX, rect.startY, w, h, 0, 0, w, h )
+  newImage.copy( sourceImage, rect.startX, rect.startY, w, h, 0, 0, w, h )
   return newImage;
 }
 
