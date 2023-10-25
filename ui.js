@@ -6,11 +6,12 @@ const utilBindings = {
 const editBindings = {
   "b":simpleBlackAndWhite,
   "l":simpleBlur,
+  "j":myAwesomeFilter,
 }
 
 function keyPressed() {
   if( key in editBindings ) {
-    if( dragInfo.startX && dragInfo.endX) {
+    if( dragInfo.startX && dragInfo.endX && dragArea() > 0 ) {
       editOnSubsection(dragInfo, editBindings[key], workingImage)
       dragInfo = {};  
     } else {
@@ -55,6 +56,10 @@ function mouseReleased() {
     dragInfo.endY = tempY;
   }
   noLoop();
+}
+
+function dragArea() {
+  return (dragInfo.endX - dragInfo.startX) * (dragInfo.endY - dragInfo.startY)
 }
 
 function doubleClicked() {

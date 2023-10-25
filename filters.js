@@ -1,3 +1,8 @@
+function myAwesomeFilter(sourceImage) {
+  console.log("hello")
+  return sourceImage
+}
+
 function simpleBlackAndWhite(sourceImage) {
   const bwImg = duplicate(sourceImage);
   bwImg.loadPixels();
